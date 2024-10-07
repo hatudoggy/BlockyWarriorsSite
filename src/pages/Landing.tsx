@@ -7,6 +7,7 @@ import WarriorCard from "../components/WarriorCard"
 import { Refresh } from "@mui/icons-material"
 import WizardChar from "../assets/images/Wizard.png"
 import ArcherChar from "../assets/images/Archer.png"
+import { HashLink } from 'react-router-hash-link'
 
 export default function Landing() {
 
@@ -97,12 +98,14 @@ function Hero() {
           >
             Join Now!
           </Button>
-          <Button
-            variant="outlined"
-            onClick={() => window.location.replace("/#steps")}
-          >
-            Learn More
-          </Button>
+          <HashLink to="#steps">
+            <Button
+              variant="outlined"
+            >
+              Learn More
+            </Button>
+          </HashLink>
+
         </Stack>
 
         <Box 
