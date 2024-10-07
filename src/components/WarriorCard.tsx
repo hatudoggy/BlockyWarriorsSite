@@ -1,5 +1,5 @@
 
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Stack, Typography } from "@mui/material"
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Stack, SxProps, Typography } from "@mui/material"
 import BowIcon from "../assets/icons/bow-and-arrow.png"
 import GunIcon from "../assets/icons/gun.png"
 import StaffIcon from "../assets/icons/staff.png"
@@ -9,9 +9,13 @@ import { Rarity, WarriorDetails } from "../interfaces/warrior"
 interface StoreItemProps {
   variant?: "default" | "store"
   cardDetails: WarriorDetails
+  cardStyle?: SxProps
 }
 
-export default function WarriorCard({variant = "default", cardDetails}: StoreItemProps) {
+export default function WarriorCard({
+  variant = "default", cardDetails, cardStyle
+}: StoreItemProps) {
+  
   const { photoURL, number, name, price, type, rarity } = cardDetails
 
   const photo = "https://preview.redd.it/the-cube-pig-from-my-personal-project-the-cute-cube-series-v0-i6q4t3ws94e91.jpg?auto=webp&s=35fa859b3b207f4990d040b0b8bc6fc3d567d09e"
@@ -31,7 +35,8 @@ export default function WarriorCard({variant = "default", cardDetails}: StoreIte
         width: variant === "store" ? 270 : 240,
         borderWidth: 2,
         borderStyle: 'solid',
-        borderColor: rarity === 'mythic' ? 'rgb(170,59,184)' : rarity === 'legendary' ? 'rgb(214,91,42)' : '#2e2e2e'
+        borderColor: rarity === 'mythic' ? 'rgb(170,59,184)' : rarity === 'legendary' ? 'rgb(214,91,42)' : '#2e2e2e',
+        ...cardStyle
       }}
     >
       <Box
@@ -67,7 +72,7 @@ export default function WarriorCard({variant = "default", cardDetails}: StoreIte
         >
           <Stack direction='row' gap={0.5}  justifyContent='space-between'>
             <Stack direction='row' alignItems='center' gap={1}>
-              <Typography variant="body1" sx={{color: "#afafaf"}}>#{number}</Typography>
+              <Typography variant="body1" sx={{color: "#afafaf", fontSize: { xs: 14, md: 16} }}>#{number}</Typography>
               <RarityChip rarity={rarity} />
             </Stack>
             {
@@ -75,7 +80,15 @@ export default function WarriorCard({variant = "default", cardDetails}: StoreIte
                 <Typography variant="h5" color="primary.light">${price}</Typography>
             }
           </Stack>
-          <Typography variant="h5" fontWeight={600} fontFamily="Bloxat" noWrap>{name}</Typography>
+          <Typography 
+            variant="h5" 
+            fontWeight={600} 
+            fontFamily="Bloxat" 
+            noWrap
+            sx={{ fontSize: { xs: 20, md: 24} }}
+          >
+            {name}
+          </Typography>
         </Stack>
 
         <Stack direction='row' gap={1}>
@@ -83,12 +96,16 @@ export default function WarriorCard({variant = "default", cardDetails}: StoreIte
             component='img'
             src={typeIcon[type]}
             sx={{
-              width: 22,
-              height: 22,
-              opacity: 0.7
+              width: { xs: 18, md: 22},
+              height: { xs: 18, md: 22},
+              opacity: 0.7,
             }}
           />
-          <Typography textTransform='capitalize' fontWeight={600} sx={{ opacity: 0.7 }}>
+          <Typography 
+            textTransform='capitalize' 
+            fontWeight={600} 
+            sx={{ opacity: 0.7, fontSize: { xs: 14, md: 16} }}
+          >
             {type}
           </Typography>
         </Stack>
@@ -138,7 +155,7 @@ function RarityChip({rarity = 'common'}: RarityChipProps) {
         height: 'min-content'
       }}
     >
-      <Typography textTransform='capitalize'>{rarity}</Typography>
+      <Typography textTransform='capitalize' sx={{ fontSize: { xs: 14, md: 16} }}>{rarity}</Typography>
     </Stack>
   )
 }

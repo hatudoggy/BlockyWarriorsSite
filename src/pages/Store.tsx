@@ -1,32 +1,27 @@
-import { Box, Container, Paper, Stack, Typography } from "@mui/material"
+import { Box, Container, Paper, Stack, Typography, useMediaQuery } from "@mui/material"
 import Navbar from "../components/Navbar"
 import { WarriorDetails } from "../interfaces/warrior"
 import WarriorCard from "../components/WarriorCard"
-
+import { storeItems } from "../data/store"
+import StoreBanner from "../assets/images/RockBG.webp"
 
 
 export default function Store() {
 
-  const basicWarriors: WarriorDetails[] = [
-    {photoURL: "", number: 1, name: "Starter Knight", price: 50, type: "melee", rarity: "common"},
-    {photoURL: "", number: 2, name: "Starter Mage", price: 50, type: "mage", rarity: "common"},
-    {photoURL: "", number: 3, name: "Starter Archer", price: 50, type: "archer", rarity: "common"},
-    {photoURL: "", number: 4, name: "Starter Ranger", price: 50, type: "gunner", rarity: "common"},
-  ]
+  const allWarriors = storeItems
 
-  const limitedOffers: WarriorDetails[] = [
-    {photoURL: "", number: 12, name: "Starter Knight", price: 50, type: "melee", rarity: "mythic"},
-    {photoURL: "", number: 64, name: "Starter Mage", price: 50, type: "mage", rarity: "common"},
-    {photoURL: "", number: 44, name: "Starter Archer", price: 50, type: "archer", rarity: "legendary"},
-    {photoURL: "", number: 23, name: "Starter Ranger", price: 50, type: "gunner", rarity: "common"},
-  ]
+  const basicWarriorsItems = [0, 1, 2, 3]
+  const basicWarriors = allWarriors.filter((_item, idx)=> basicWarriorsItems.includes(idx))
 
-  const allWarriors: WarriorDetails[] = [
-    {photoURL: "", number: 54, name: "Starter Knight", price: 50, type: "melee", rarity: "common"},
-    {photoURL: "", number: 13, name: "Starter Mage", price: 50, type: "mage", rarity: "common"},
-    {photoURL: "", number: 32, name: "Starter Archer", price: 50, type: "archer", rarity: "common"},
-    {photoURL: "", number: 43, name: "Starter Ranger", price: 50, type: "gunner", rarity: "common"},
-  ]
+
+  const limitedOffers = 
+    allWarriors
+      .filter((item) => item.rarity == 'mythic' || item.rarity == 'legendary')
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value)
+      .slice(0, 4)
+
 
 
   return (
@@ -44,7 +39,7 @@ export default function Store() {
           Store
         </Typography>
 
-        <Box
+        {/* <Box
           sx={{
             width: "100%",
             height: 500,
@@ -60,6 +55,31 @@ export default function Store() {
               height: "100%"
             }}
           ></Paper>
+        </Box> */}
+
+        
+        <Box
+          sx={{
+            width: "100%",
+            height: 150,
+            my: 3,
+            mb: 8,
+            mx: { xs: 0, md: 2 },
+            borderRadius: 4,
+            overflow: 'hidden'
+          }}
+        >
+          <Box 
+            component="img"
+            src={StoreBanner}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: 'cover',
+              objectPosition: 'center center',
+              filter: 'blur(4px)'
+            }}
+          />
         </Box>
         
         <Stack gap={8}>
@@ -102,12 +122,13 @@ interface StoreSectionProps {
 function StoreSection(props: StoreSectionProps) {
 
   const { title, itemList, layout = 'scrollable' } = props
+  const mobile = useMediaQuery('(min-width:800px)')
 
   return(
     <Stack gap={2}>
       <Typography variant="h4" fontSize={30} fontWeight={600}>{title}</Typography>
       
-      <Stack direction='row' flexWrap={layout === 'scrollable' ? 'nowrap' : 'wrap'} gap={1.5}>
+      <Stack direction={mobile ? 'row' : 'column'} alignItems='center' flexWrap={layout === 'scrollable' ? 'nowrap' : 'wrap'} gap={mobile ? 1.5 : 2}>
         {
           itemList.map((item, idx)=>
             <WarriorCard 

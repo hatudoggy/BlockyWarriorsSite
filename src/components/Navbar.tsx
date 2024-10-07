@@ -13,13 +13,18 @@ const links = [
 export default function Navbar() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate()
   const location = useLocation()
-  const drawerWidth = 240;
+  const drawerWidth = 240
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
-  };
+  }
+
+  const handleCartToggle = () => {
+    setCartOpen((prevState) => !prevState);
+  }
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -38,7 +43,7 @@ export default function Navbar() {
       <List>
         {links.map((item) => (
           <ListItem key={item.label} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
+            <ListItemButton sx={{ textAlign: 'center' }} onClick={()=>navigate(`../${item.link}`)}>
               <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
@@ -80,6 +85,11 @@ export default function Navbar() {
               width={25}
               sx={{ display: { sm: 'none' } }}
             >
+              <IconButton
+                onClick={handleCartToggle}
+              >
+                <ShoppingCart />
+              </IconButton>
             </Box>
             <Stack 
               direction='row'
@@ -114,7 +124,9 @@ export default function Navbar() {
               >
                 Login
               </Button>
-              <IconButton>
+              <IconButton
+                onClick={handleCartToggle}
+              >
                 <ShoppingCart />
               </IconButton>
             </Stack>
@@ -137,6 +149,44 @@ export default function Navbar() {
           {drawer}
         </Drawer>
       </nav>
+      <Drawer
+        variant="temporary"
+        open={cartOpen}
+        onClose={handleCartToggle}
+        anchor="right"
+        sx={{
+          '& .MuiDrawer-paper': { width: { xs: 300, md: 450}},
+        }}
+      >
+        <CartDrawer 
+          onToggle={()=>handleCartToggle()}
+        />
+      </Drawer>
     </>
+  )
+}
+
+
+interface CartDrawerProps {
+  onToggle: () => void
+}
+
+function CartDrawer({onToggle}: CartDrawerProps) {
+
+  return(
+    <Box onClick={onToggle}>
+      <Stack 
+        width='100%'
+        height='100%'
+        p={3}
+        gap={1}
+      >
+        <Typography variant="h6" fontWeight={600}>
+          Shopping Cart
+        </Typography>
+
+
+      </Stack>
+    </Box>
   )
 }
