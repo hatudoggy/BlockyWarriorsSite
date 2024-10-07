@@ -48,7 +48,7 @@ export default function WarriorCard({variant = "default", cardDetails}: StoreIte
             bgcolor: '#215252',
             borderRadius: 4,
           }}
-          src={photo}
+          src={photoURL === "" ? photo : photoURL}
         />
       </Box>
       <CardContent

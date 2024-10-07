@@ -1,5 +1,5 @@
 import { Menu, ShoppingCart } from "@mui/icons-material";
-import { AppBar, Box, Button, Container, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography, useMediaQuery } from "@mui/material";
+import { AppBar, Box, Button, Container, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BWLogo from "./BWLogo";
@@ -138,55 +138,5 @@ export default function Navbar() {
         </Drawer>
       </nav>
     </>
-  )
-}
-
-
-
-
-function NavbarOld() {
-
-  return(
-    <Stack
-      component="nav"
-      direction="row"
-      justifyItems="start"
-    >
-      <Container>
-      {
-        links.map((item, idx)=>
-          <NavbarItem 
-            key={idx}
-            label={item.label}
-            link={item.link}
-          />
-        )
-      }
-      </Container>
-    </Stack>
-  )
-}
-
-
-interface NavbarItemProps {
-  label: string
-  link: string
-}
-
-function NavbarItem(props: NavbarItemProps) {
-
-  const {label, link} = props
-  const navigate = useNavigate()
-
-  return(
-    <Button
-      onClick={()=>navigate(`../${link}`)}
-      sx={{
-        color: 'white',
-        height: 60
-      }}
-    >
-      {label}
-    </Button>
   )
 }

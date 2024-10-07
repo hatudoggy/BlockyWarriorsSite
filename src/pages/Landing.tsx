@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Paper, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
+import { Box, Button, Container, Divider, Stack, Typography, useMediaQuery, useTheme } from "@mui/material"
 import Navbar from "../components/Navbar"
 import { generateTextShadow } from "../utils/designUtils"
 import horizonMap from "../assets/images/world_horizon_2.jpeg"
