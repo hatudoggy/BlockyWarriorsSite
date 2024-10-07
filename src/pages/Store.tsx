@@ -1,4 +1,4 @@
-import { Box, Container, Paper, Stack, Typography, useMediaQuery } from "@mui/material"
+import { Box, Container, Stack, Typography, useMediaQuery } from "@mui/material"
 import Navbar from "../components/Navbar"
 import { WarriorDetails } from "../interfaces/warrior"
 import WarriorCard from "../components/WarriorCard"
