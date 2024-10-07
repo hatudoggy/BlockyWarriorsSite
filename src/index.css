@@ -1,0 +1,17 @@
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: 'Bloxat';
+  src: url("./assets/fonts/Bloxat-PDoE.ttf") format('truetype');
+}
+
+@font-face {
+  font-family: 'Pixbob';
+  src: url("./assets/fonts/PixBob-Lite-Free.ttf") format('truetype');
+}
