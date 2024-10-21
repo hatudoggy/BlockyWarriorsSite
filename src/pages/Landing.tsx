@@ -63,6 +63,10 @@ function Hero() {
   const theme = useTheme()
   const mobile = useMediaQuery('(min-width:800px)')
 
+  const onJoinNow = () => {
+    alert("Simulate user going to the Login Page")
+  }
+
   return(
     <Box
       component="section"
@@ -112,6 +116,7 @@ function Hero() {
               borderRadius: 3,
               filter: "drop-shadow(0 0 34px rgba(62, 156, 87, 0.2))"
             }}
+            onClick={()=>onJoinNow()}
           >
             Join Now!
           </Button>
@@ -480,6 +485,10 @@ function Map() {
 
 function Download() {
 
+  const onGetStarted = () => {
+    alert("Simulate user going to the Login Page")
+  }
+
   return(
     <Box
       component="section"
@@ -528,6 +537,7 @@ function Download() {
           </Typography>
           <Button
             variant="contained"
+            onClick={()=>onGetStarted()}
           >
             Get Started
           </Button>

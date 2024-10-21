@@ -4,6 +4,8 @@ import { WarriorDetails } from "../interfaces/warrior"
 import WarriorCard from "../components/WarriorCard"
 import { storeItems } from "../data/store"
 import StoreBanner from "../assets/images/RockBG.webp"
+import { useContext } from "react"
+import { CartContext } from "./App"
 
 
 export default function Store() {
@@ -123,6 +125,7 @@ function StoreSection(props: StoreSectionProps) {
 
   const { title, itemList, layout = 'scrollable' } = props
   const mobile = useMediaQuery('(min-width:800px)')
+  const { addItem } = useContext(CartContext) as CartContext
 
   return(
     <Stack gap={2}>
@@ -135,6 +138,7 @@ function StoreSection(props: StoreSectionProps) {
               key={idx}
               variant="store"
               cardDetails={item}
+              addToCartClick={()=>addItem(item)}
             />
           )
         }

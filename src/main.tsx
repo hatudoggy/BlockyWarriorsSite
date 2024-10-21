@@ -2,9 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
-import { createHashRouter, RouterProvider } from 'react-router-dom'
-import Landing from './pages/Landing'
-import Store from './pages/Store'
+import App from './pages/App'
 
 
 const theme = createTheme({
@@ -33,22 +31,13 @@ const theme = createTheme({
   }
 })
 
-const router = createHashRouter([
-  {
-    path: "/",
-    element: <Landing />
-  },
-  {
-    path: "store",
-    element: <Store />
-  },
-])
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <RouterProvider router={router} />
+        <App />
     </ThemeProvider>
   </StrictMode>,
 )

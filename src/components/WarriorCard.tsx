@@ -10,22 +10,16 @@ interface StoreItemProps {
   variant?: "default" | "store"
   cardDetails: WarriorDetails
   cardStyle?: SxProps
+  addToCartClick?: () => void
 }
 
 export default function WarriorCard({
-  variant = "default", cardDetails, cardStyle
+  variant = "default", cardDetails, cardStyle, addToCartClick
 }: StoreItemProps) {
   
   const { photoURL, number, name, price, type, rarity } = cardDetails
 
   const photo = "https://preview.redd.it/the-cube-pig-from-my-personal-project-the-cute-cube-series-v0-i6q4t3ws94e91.jpg?auto=webp&s=35fa859b3b207f4990d040b0b8bc6fc3d567d09e"
-
-  const typeIcon = {
-    "melee": SwordIcon,
-    "archer": BowIcon,
-    "mage": StaffIcon,
-    "gunner": GunIcon,
-  }
 
   return(
     <Card
@@ -117,6 +111,7 @@ export default function WarriorCard({
             <Button
               variant="contained"
               fullWidth
+              onClick={addToCartClick}
             >
               Add to Cart
             </Button>
@@ -127,22 +122,30 @@ export default function WarriorCard({
 }
 
 
+export const typeIcon = {
+  "melee": SwordIcon,
+  "archer": BowIcon,
+  "mage": StaffIcon,
+  "gunner": GunIcon,
+}
+
+
+export const rarityColor = {
+  'common': 'linear-gradient(180deg, rgba(34,237,98,1) 0%, rgba(55,158,77,1) 98%)',
+  'rare': 'linear-gradient(180deg, rgba(34,151,237,1) 0%, rgba(55,105,158,1) 98%)',
+  'mythic': 'linear-gradient(180deg, rgba(237,34,198,1) 0%, rgba(170,59,184,1) 98%)',
+  'legendary':
+    //legendary gold:
+    //'linear-gradient(180deg, rgba(237,207,34,1) 0%, rgba(158,112,55,1) 100%)' 
+    //legendary orange: 
+    'linear-gradient(180deg, rgba(231,138,57,1) 0%, rgba(214,91,42,1) 100%)'
+}
+
 interface RarityChipProps {
   rarity?: Rarity
 }
 
-function RarityChip({rarity = 'common'}: RarityChipProps) {
-
-  const rarityColor = {
-    'common': 'linear-gradient(180deg, rgba(34,237,98,1) 0%, rgba(55,158,77,1) 98%)',
-    'rare': 'linear-gradient(180deg, rgba(34,151,237,1) 0%, rgba(55,105,158,1) 98%)',
-    'mythic': 'linear-gradient(180deg, rgba(237,34,198,1) 0%, rgba(170,59,184,1) 98%)',
-    'legendary':
-      //legendary gold:
-      //'linear-gradient(180deg, rgba(237,207,34,1) 0%, rgba(158,112,55,1) 100%)' 
-      //legendary orange: 
-      'linear-gradient(180deg, rgba(231,138,57,1) 0%, rgba(214,91,42,1) 100%)'
-  }
+export function RarityChip({rarity = 'common'}: RarityChipProps) {
 
   return(
     <Stack
