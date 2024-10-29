@@ -1,5 +1,5 @@
 import { Add, Delete, Menu, Remove, ShoppingCart, ShoppingCartCheckout, Token } from "@mui/icons-material";
-import { AppBar, Badge, Box, Button, CardMedia, Container, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, Button, CardMedia, Container, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Snackbar, Stack, Toolbar, Typography } from "@mui/material";
 import { useContext, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import BWLogo from "./BWLogo";
@@ -201,6 +201,8 @@ function CartDrawer({
 }: CartDrawerProps) {
 
   const { cart, addItem, removeItem, deleteItem } = useContext(CartContext) as CartContext
+  const [cartSnackbar, setCartSnackbar] = useState(false)
+  const [cartSnackbarMessage, setCartSnackbarMessage] = useState("")
 
   const totalPrice = useMemo(() =>
     Intl.NumberFormat('en-US', {
@@ -219,91 +221,118 @@ function CartDrawer({
     alert("Simulate successful checkout of customer")
   }
 
+  const openSnackbar = (message: string) => {
+    setCartSnackbarMessage(message)
+    setCartSnackbar(true)
+  }
+
   return(
-    <Box
-      width='100%'
-      height='100%'
-      sx={{
-        overflowY: 'hidden'
-      }}
-    >
-      <Stack 
+    <>
+      <Box
         width='100%'
         height='100%'
         sx={{
-          p: { xs: 1.5, md: 3},
-          gap: {xs: 2, md: 2}
+          overflowY: 'hidden'
         }}
       >
-        <Typography variant="h5" fontWeight={600}>
-          Shopping Cart
-        </Typography>
-
-        <Stack
+        <Stack 
+          width='100%'
+          height='100%'
           sx={{
-            flex: 1,
-            gap: {xs: 1, md: 2},
-            overflowY: 'auto'
+            p: { xs: 1.5, md: 3},
+            gap: {xs: 2, md: 2}
           }}
         >
-          {
-            cart.length !== 0 ? 
-              cart.map(
-                item => 
-                  <CartItem 
-                    key={item.itemDetails.number}
-                    itemDetails={item.itemDetails}
-                    quantity={item.quantity}
-                    onAdd={()=>addItem(item.itemDetails)}
-                    onRemove={()=>removeItem(item.itemDetails.number)}
-                    onDelete={()=>deleteItem(item.itemDetails.number)}
-                  />
-              )
-              :
-              <Stack 
-                py={8}
-                alignItems='center'
-                gap={1}
-              >
-                <Token 
-                  sx={{
-                    fontSize: 120,
-                    color: "GrayText"
-                  }}
-                />
-                <Stack>
-                  <Typography variant="h6" textAlign='center' color="GrayText">No warriors in the cart yet</Typography>
-                  <Typography color="GrayText" textAlign='center' maxWidth={300}>
-                    Any warriors you have added to cart will be shown here
-                  </Typography>
-                </Stack>
-              </Stack>
-          }
-        </Stack>
+          <Typography variant="h5" fontWeight={600}>
+            Shopping Cart
+          </Typography>
 
-        <Stack>
-          <Stack 
-            direction='row' 
-            justifyContent='space-between'
-            pb={2}
+          <Stack
+            sx={{
+              flex: 1,
+              gap: {xs: 1, md: 2},
+              overflowY: 'auto'
+            }}
           >
-            <Typography variant="h6">Total</Typography>
-            <Typography variant="h6" color="primary.light">
-              {totalPrice}
-            </Typography>
+            {
+              cart.length !== 0 ? 
+                cart.map(
+                  item => 
+                    <CartItem 
+                      key={item.itemDetails.number}
+                      itemDetails={item.itemDetails}
+                      quantity={item.quantity}
+                      onAdd={()=>{
+                        addItem(item.itemDetails)
+                        openSnackbar("Added 1 item")
+                      }}
+                      onRemove={()=>{
+                        removeItem(item.itemDetails.number)
+                        openSnackbar("Removed 1 item")
+                      }}
+                      onDelete={()=>{
+                        deleteItem(item.itemDetails.number)
+                        openSnackbar("Deleted item")
+                      }}
+                    />
+                )
+                :
+                <Stack 
+                  py={8}
+                  alignItems='center'
+                  gap={1}
+                >
+                  <Token 
+                    sx={{
+                      fontSize: 120,
+                      color: "GrayText"
+                    }}
+                  />
+                  <Stack>
+                    <Typography variant="h6" textAlign='center' color="GrayText">No warriors in the cart yet</Typography>
+                    <Typography color="GrayText" textAlign='center' maxWidth={300}>
+                      Any warriors you have added to cart will be shown here
+                    </Typography>
+                  </Stack>
+                </Stack>
+            }
           </Stack>
 
-          <Button 
-            variant="contained" 
-            size="large"
-            startIcon={<ShoppingCartCheckout />}
-            onClick={()=>proceedCheckout()}
-          >
-            Checkout
-          </Button>
+          <Stack>
+            <Stack 
+              direction='row' 
+              justifyContent='space-between'
+              pb={2}
+            >
+              <Typography variant="h6">Total</Typography>
+              <Typography variant="h6" color="primary.light">
+                {totalPrice}
+              </Typography>
+            </Stack>
+
+            <Button 
+              variant="contained" 
+              size="large"
+              startIcon={<ShoppingCartCheckout />}
+              onClick={()=>proceedCheckout()}
+            >
+              Checkout
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </Box>
+      </Box>
+      <Snackbar
+        anchorOrigin={{ 
+          vertical: "bottom", 
+          horizontal: "right" 
+        }}
+        open={cartSnackbar}
+        onClose={() => setCartSnackbar(false)}
+        key={"bottom" + "center"}
+        autoHideDuration={1000}
+        message={cartSnackbarMessage}
+      />
+    </>
   )
 }
 

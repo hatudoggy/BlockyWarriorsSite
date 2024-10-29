@@ -1,11 +1,13 @@
-import { Box, Container, Stack, Typography, useMediaQuery } from "@mui/material"
+import { Box, Container, Snackbar, Stack, Typography, useMediaQuery } from "@mui/material"
 import Navbar from "../components/Navbar"
 import { WarriorDetails } from "../interfaces/warrior"
 import WarriorCard from "../components/WarriorCard"
 import { storeItems } from "../data/store"
-import StoreBanner from "../assets/images/RockBG.webp"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { CartContext } from "./App"
+import { Carousel } from "react-bootstrap"
+import Banner1 from "../assets/images/banner1.png"
+import Banner2 from "../assets/images/banner2.png"
 
 
 export default function Store() {
@@ -40,49 +42,8 @@ export default function Store() {
         >
           Store
         </Typography>
-
-        {/* <Box
-          sx={{
-            width: "100%",
-            height: 500,
-            my: 3,
-            mb: 8,
-            px: 4
-          }}
-        >
-          <Paper
-            sx={{
-              borderRadius: 4,
-              width: "100%",
-              height: "100%"
-            }}
-          ></Paper>
-        </Box> */}
-
         
-        <Box
-          sx={{
-            width: "100%",
-            height: 150,
-            my: 3,
-            mb: 8,
-            mx: { xs: 0, md: 2 },
-            borderRadius: 4,
-            overflow: 'hidden'
-          }}
-        >
-          <Box 
-            component="img"
-            src={StoreBanner}
-            sx={{
-              width: "100%",
-              height: "100%",
-              objectFit: 'cover',
-              objectPosition: 'center center',
-              filter: 'blur(4px)'
-            }}
-          />
-        </Box>
+        <StoreSlideshow />
         
         <Stack gap={8}>
           <StoreSection 
@@ -115,6 +76,49 @@ export default function Store() {
 }
 
 
+function StoreSlideshow() {
+
+  const slides = [Banner1, Banner2]
+
+  return(
+    <Box
+      sx={{
+        px: {xs: 0, md: 6},
+        pt: 1,
+        pb: 4,
+      }}
+    >
+      <Carousel
+        style={{
+          overflow: 'hidden',
+          borderRadius: 10,
+        }}
+      >
+        {
+          slides.map((slide) =>
+            <Carousel.Item>
+              <Box
+                component="img"
+                src={slide}
+                sx={{
+                  width: '100%',
+                  height: {xs: 200, sm: 300, md: 500},
+                  objectFit: 'cover'
+                }}
+              />
+              {/* <Carousel.Caption>
+                <h3>First slide label</h3>
+                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+              </Carousel.Caption> */}
+            </Carousel.Item>
+          )
+        }
+      </Carousel>
+    </Box>
+  )
+}
+
+
 interface StoreSectionProps {
   title: string
   layout?: 'scrollable' | 'grid'
@@ -126,24 +130,41 @@ function StoreSection(props: StoreSectionProps) {
   const { title, itemList, layout = 'scrollable' } = props
   const mobile = useMediaQuery('(min-width:800px)')
   const { addItem } = useContext(CartContext) as CartContext
+  const [cartSnackbar, setCartSnackbar] = useState(false)
 
   return(
-    <Stack gap={2}>
-      <Typography variant="h4" fontSize={30} fontWeight={600}>{title}</Typography>
-      
-      <Stack direction={mobile ? 'row' : 'column'} alignItems='center' flexWrap={layout === 'scrollable' ? 'nowrap' : 'wrap'} gap={mobile ? 1.5 : 2}>
-        {
-          itemList.map((item, idx)=>
-            <WarriorCard 
-              key={idx}
-              variant="store"
-              cardDetails={item}
-              addToCartClick={()=>addItem(item)}
-            />
-          )
-        }
+    <>
+      <Stack gap={2}>
+        <Typography variant="h4" fontSize={30} fontWeight={600}>{title}</Typography>
+        
+        <Stack direction={mobile ? 'row' : 'column'} alignItems='center' flexWrap={layout === 'scrollable' ? 'nowrap' : 'wrap'} gap={mobile ? 1.5 : 2}>
+          {
+            itemList.map((item, idx)=>
+              <WarriorCard 
+                key={idx}
+                variant="default"
+                cardDetails={item}
+                addToCartClick={()=>{
+                  addItem(item)
+                  setCartSnackbar(true)
+                }}
+              />
+            )
+          }
+        </Stack>
       </Stack>
-    </Stack>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right"
+        }}
+        open={cartSnackbar}
+        onClose={() => setCartSnackbar(false)}
+        key={"bottom" + "center"}
+        autoHideDuration={1000}
+        message="Added item to cart"
+      />
+    </>
   )
 }
 
