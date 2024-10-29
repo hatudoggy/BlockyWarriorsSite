@@ -142,7 +142,7 @@ function StoreSection(props: StoreSectionProps) {
             itemList.map((item, idx)=>
               <WarriorCard 
                 key={idx}
-                variant="default"
+                variant="store"
                 cardDetails={item}
                 addToCartClick={()=>{
                   addItem(item)
